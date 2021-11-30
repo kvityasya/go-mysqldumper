@@ -23,7 +23,6 @@ func New(config *Config, db *sql.DB, logger *logrus.Logger) *Dumper {
 
 func (s *Dumper) Dump(w DumpWriter) error {
 	startQueries := `
-		SET NAMES utf8mb4;
 		SET FOREIGN_KEY_CHECKS = 0;
 	`
 	endQueries := `
