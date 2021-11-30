@@ -25,7 +25,6 @@ func (s *Dumper) Dump(w DumpWriter) error {
 	startQueries := `
 		SET NAMES utf8;
 		SET FOREIGN_KEY_CHECKS = 0;
-		SET SESSION sql_mode = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
 	`
 	endQueries := `
 		SET FOREIGN_KEY_CHECKS = 1;
@@ -155,7 +154,7 @@ func (s *Dumper) GetDefinitions() (*Tables, error) {
 		WHERE 
 			t.table_schema=DATABASE() 
 		GROUP BY 
-			t.table_schema, t.table_name
+			t.table_type,t.table_schema, t.table_name, t.data_length, t.index_length
 		ORDER BY 
 			t.table_type;
 	`
