@@ -1,6 +1,7 @@
 package main
 
 import (
+	"compress/gzip"
 	"database/sql"
 	"io/ioutil"
 	"os"
@@ -48,10 +49,11 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer f.Close()
 
-	// create new dump writer
-	w := mysqldumper.NewFileWriter(f)
+	gw, _ := gzip.NewWriterLevel(f, gzip.BestCompression)
+	defer gw.Close()
+
+	w := mysqldumper.NewGzipWriter(gw)
 	defer w.Flush() // flush at the end
 
 	// start dumping the data
